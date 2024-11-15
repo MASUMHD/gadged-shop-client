@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import app from "../Firebase Config/Firebase";
 import axios from "axios";
+// import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 
@@ -18,6 +19,7 @@ const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  // const useaxiosPublic = useAxiosPublic();
 
   const googleLoginProvider = new GoogleAuthProvider();
 
