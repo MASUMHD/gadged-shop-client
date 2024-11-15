@@ -2,26 +2,26 @@ import { BiLogOut } from "react-icons/bi";
 import { GrOverview } from "react-icons/gr";
 import { IoAddCircleOutline, IoHomeOutline } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
-import userUserData from "../../Hooks/userUserData";
+import useUserData from "../../Hooks/useUserData";
 import { MdOutlineInventory2 } from "react-icons/md";
 import useAuth from "../../Hooks/useAuth";
 
 const sellerRoutes = [
   {
     id: 1,
-    route: "/dashboard/my-product",
+    route: "/dashboard/my-products",
     title: "My Product",
     icon: <MdOutlineInventory2 />,
   },
   {
     id: 2,
-    route: "/dashboard/add-product",
+    route: "/dashboard/add-products",
     title: "Add Product",
     icon: <IoAddCircleOutline />,
   },
 ];
 const Sidebar = () => {
-  const userData = userUserData();
+  const userData = useUserData();
   const { logout} = useAuth();
 
   return (

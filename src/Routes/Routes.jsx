@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../Layouts/MainLayout";
 import Home from "../Pages/Home";
 import About from "../Pages/About";
@@ -9,6 +9,9 @@ import Register from "../Pages/Register";
 import DashboardLayouts from "../Layouts/DashboardLayouts";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import Overview from "../Pages/Dashboard/Overview";
+import SellerRoute from "./PrivateRoute/SellerRoute";
+import MyProducts from "../Pages/Dashboard/Seller/MyProducts";
+import AddProducts from "../Pages/Dashboard/Seller/AddProducts";
 
 export const router = createBrowserRouter([
   {
@@ -52,13 +55,26 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/dashboard",
-        element: <Navigate to="/dashboard/overview" replace />,
-      },
-      {
         path: "/dashboard/overview",
         element: <Overview />,
-      }
+      },
+      // Seller Routes
+      {
+        path: "/dashboard/my-products",
+        element: (
+          <SellerRoute>
+            <MyProducts />
+          </SellerRoute>
+        ),
+      },
+      {
+        path: "/dashboard/add-products",
+        element: (
+          <SellerRoute>
+            <AddProducts />
+          </SellerRoute>
+        ),
+      },
     ],
   },
 ]);
