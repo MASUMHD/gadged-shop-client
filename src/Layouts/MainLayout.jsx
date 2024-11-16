@@ -3,9 +3,10 @@ import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
 const MainLayout = () => {
+
   return (
     <div>
-      <div>
+      <div className="bg-base-200">
         <Navbar />
       </div>
       <div className="min-h-screen">
