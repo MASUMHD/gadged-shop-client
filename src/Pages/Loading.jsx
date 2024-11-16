@@ -6,7 +6,7 @@ const Loading = () => {
       <GridLoader
         color='#000000'
         loading={true}
-        size={150}
+        size={30}
       />
     </div>
   );
