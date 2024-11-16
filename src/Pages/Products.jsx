@@ -3,16 +3,19 @@ import FilterBar from "../Components/Products/FilterBar";
 import SearchBar from "../Components/SearchBar";
 import SortByPrice from "../Components/SortByPrice";
 import axios from "axios";
+import Loading from "./Loading";
+import ProductCard from "../Components/ProductCard";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // fetch products from API
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
       axios.get(`http://localhost:4000/all-products`).then((res) => {
+        console.log(res.data);
         setProducts(res.data);
         setLoading(false);
       });
@@ -36,7 +39,27 @@ const Products = () => {
         </div>
         {/* products */}
         <div className="col-span-10">
-            
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              {products.length === 0 ? (
+                <div className="w-full h-full flex items-center justify-center">
+                  <h1 className="text-3xl text-center font-bold">
+                    No products found
+                  </h1>
+                </div>
+              ) : (
+                <div className="min-h-screen grid grid-cols-3 gap-2">
+                    {
+                        products.map((product) =>(
+                            <ProductCard key={product.objectId} product={product}/>   
+                        ))
+                    }
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
