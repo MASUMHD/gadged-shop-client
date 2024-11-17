@@ -33,7 +33,7 @@ const Products = () => {
         <SortByPrice />
       </div>
       {/* content */}
-      <div className="grid grid-cols-12">
+      <div className="grid grid-cols-12 gap-4">
         <div className="col-span-2">
           <FilterBar />
         </div>
@@ -53,7 +53,9 @@ const Products = () => {
                 <div className="min-h-screen grid grid-cols-3 gap-2">
                     {
                         products.map((product) =>(
-                            <ProductCard key={product.objectId} product={product}/>   
+                            <div key={product.objectId} className='mb-8'>
+                              <ProductCard  product={product}/>
+                            </div>   
                         ))
                     }
                 </div>
