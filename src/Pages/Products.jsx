@@ -5,6 +5,7 @@ import SortByPrice from "../Components/SortByPrice";
 import axios from "axios";
 import Loading from "./Loading";
 import ProductCard from "../Components/ProductCard";
+import { FaArrowCircleRight, FaArrowCircleLeft } from "react-icons/fa";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -13,8 +14,10 @@ const Products = () => {
   const [sort, setSort] = useState("asc");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
-  const [uniqBrand, setUniqBrand] = useState([]); 
-  const [uniqCategory, setUniqCategory] = useState([]); 
+  const [uniqBrand, setUniqBrand] = useState([]);
+  const [uniqCategory, setUniqCategory] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   // fetch products from API
   useEffect(() => {
@@ -22,23 +25,26 @@ const Products = () => {
     const fetch = async () => {
       axios
         .get(
-          `http://localhost:4000/all-products?title=${search}&sort=${sort}&brand=${brand}&category=${category}`
+          `http://localhost:4000/all-products?title=${search}&page=${page}&limit=${9}&sort=${sort}&brand=${brand}&category=${category}`
         )
         .then((res) => {
+          console.log(res.data);
           setProducts(res.data.products);
-          setUniqBrand(res.data.brands); 
-          setUniqCategory(res.data.categories)
+          setUniqBrand(res.data.brands);
+          setUniqCategory(res.data.categories);
+          setTotalPages(Math.ceil(res.data.totalProducts / 9));
           setLoading(false);
         });
     };
     fetch();
-  }, [search, sort, brand, category]);
+  }, [search, sort, brand, category, page]);
 
   // search for products
   const handleSearch = (e) => {
     e.preventDefault();
     setSearch(e.target.search.value);
     e.target.search.value = "";
+    setPage(1);
   };
 
   // reset all filters
@@ -48,6 +54,15 @@ const Products = () => {
     setBrand("");
     setCategory("");
     window.location.reload();
+    setPage(1); 
+  };
+
+  // pagination
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setPage(newPage);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -95,6 +110,22 @@ const Products = () => {
               )}
             </>
           )}
+
+          {/* pagination */}
+          <div className=" flex justify-center items-center my-8">
+            <button className="btn mr-4 p-4 border rounded-full border-black hover:bg-gray-300" onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}  
+              >
+              <FaArrowCircleLeft />
+            </button>
+            <p>
+              Page {page} of {totalPages}{" "}
+            </p>
+            <button className="btn ml-4 p-4 border rounded-full border-black hover:bg-gray-300" onClick={() => handlePageChange(page + 1)}
+              disabled={page === totalPages}>
+              <FaArrowCircleRight />
+            </button>
+          </div>
         </div>
       </div>
     </div>
