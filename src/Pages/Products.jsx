@@ -9,13 +9,19 @@ import ProductCard from "../Components/ProductCard";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("asc");
+  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("");
+
+  console.log(brand, category);
 
   // fetch products from API
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
       axios.get(`http://localhost:4000/all-products`).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setProducts(res.data);
         setLoading(false);
       });
@@ -23,19 +29,26 @@ const Products = () => {
     fetch();
   }, []);
 
+  // search for products
+  const handleSearch = (e) => {
+    e.preventDefault()
+    setSearch(e.target.search.value);
+    e.target.search.value = '';
+  }
+
   return (
     <div className="container mx-auto">
       <h1 className="my-8 text-2xl font-semibold text-center">All Products</h1>
 
       {/* search and sort */}
       <div className="flex justify-between items-center w-full mb-6">
-        <SearchBar />
-        <SortByPrice />
+        <SearchBar handleSearch={handleSearch} />
+        <SortByPrice  setSort={setSort}/>
       </div>
       {/* content */}
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-2">
-          <FilterBar />
+          <FilterBar  setBrand={setBrand} setCategory={setCategory}/>
         </div>
         {/* products */}
         <div className="col-span-10">
