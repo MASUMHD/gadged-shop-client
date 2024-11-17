@@ -13,30 +13,35 @@ const Products = () => {
   const [sort, setSort] = useState("asc");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
-
-  // console.log(brand, category, search, sort);
+  const [uniqBrand, setUniqBrand] = useState([]); 
+  const [uniqCategory, setUniqCategory] = useState([]); 
 
   // fetch products from API
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
-      axios.get(`http://localhost:4000/all-products?title=${search}&sort=${sort}&brand=${brand}&category=${category}`).then((res) => {
-        // console.log(res.data);
-        setProducts(res.data);
-        setLoading(false);
-      });
+      axios
+        .get(
+          `http://localhost:4000/all-products?title=${search}&sort=${sort}&brand=${brand}&category=${category}`
+        )
+        .then((res) => {
+          setProducts(res.data.products);
+          setUniqBrand(res.data.brands); 
+          setUniqCategory(res.data.categories)
+          setLoading(false);
+        });
     };
     fetch();
   }, [search, sort, brand, category]);
 
   // search for products
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setSearch(e.target.search.value);
-    e.target.search.value = '';
-  }
+    e.target.search.value = "";
+  };
 
-  // reset all 
+  // reset all filters
   const handleReset = () => {
     setSearch("");
     setSort("asc");
@@ -52,13 +57,21 @@ const Products = () => {
       {/* search and sort */}
       <div className="flex justify-between items-center w-full mb-6">
         <SearchBar handleSearch={handleSearch} />
-        <SortByPrice  setSort={setSort}/>
+        <SortByPrice setSort={setSort} />
       </div>
+
       {/* content */}
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-2">
-          <FilterBar  setBrand={setBrand} setCategory={setCategory} handleReset={handleReset}/>
+          <FilterBar
+            setBrand={setBrand}
+            setCategory={setCategory}
+            handleReset={handleReset}
+            uniqBrand={uniqBrand}
+            uniqCategory={uniqCategory}
+          />
         </div>
+
         {/* products */}
         <div className="col-span-10">
           {loading ? (
@@ -73,13 +86,11 @@ const Products = () => {
                 </div>
               ) : (
                 <div className="min-h-screen grid grid-cols-3 gap-2">
-                    {
-                        products.map((product) =>(
-                            <div key={product.objectId} className='mb-8'>
-                              <ProductCard  product={product}/>
-                            </div>   
-                        ))
-                    }
+                  {products.map((product) => (
+                    <div key={product.objectId} className="mb-8">
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
                 </div>
               )}
             </>
