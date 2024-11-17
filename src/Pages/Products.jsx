@@ -14,20 +14,20 @@ const Products = () => {
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
 
-  console.log(brand, category);
+  // console.log(brand, category, search, sort);
 
   // fetch products from API
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
-      axios.get(`http://localhost:4000/all-products`).then((res) => {
+      axios.get(`http://localhost:4000/all-products?title=${search}&sort=${sort}&brand=${brand}&category=${category}`).then((res) => {
         // console.log(res.data);
         setProducts(res.data);
         setLoading(false);
       });
     };
     fetch();
-  }, []);
+  }, [search, sort, brand, category]);
 
   // search for products
   const handleSearch = (e) => {
@@ -35,6 +35,15 @@ const Products = () => {
     setSearch(e.target.search.value);
     e.target.search.value = '';
   }
+
+  // reset all 
+  const handleReset = () => {
+    setSearch("");
+    setSort("asc");
+    setBrand("");
+    setCategory("");
+    window.location.reload();
+  };
 
   return (
     <div className="container mx-auto">
@@ -48,7 +57,7 @@ const Products = () => {
       {/* content */}
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-2">
-          <FilterBar  setBrand={setBrand} setCategory={setCategory}/>
+          <FilterBar  setBrand={setBrand} setCategory={setCategory} handleReset={handleReset}/>
         </div>
         {/* products */}
         <div className="col-span-10">

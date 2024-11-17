@@ -2,7 +2,7 @@
 import { GrPowerReset } from "react-icons/gr";
 import { TbFilter } from "react-icons/tb";
 
-const FilterBar = ({ setBrand, setCategory }) => {
+const FilterBar = ({ setBrand, setCategory, handleReset }) => {
   return (
     <div className="bg-base-200 p-4 h-full min-h-screen rounded-t-md">
       <div className="flex items-center gap-2 justify-center mt-5">
@@ -36,7 +36,7 @@ const FilterBar = ({ setBrand, setCategory }) => {
           </select>
         </div>
       </div>
-      <button className="btn btn-outline w-full flex text-xl items-center gap-2 mt-5">
+      <button className="btn btn-outline w-full flex text-xl items-center gap-2 mt-5" onClick={handleReset}>
         <p>Reset</p> <GrPowerReset />
       </button>
     </div>
